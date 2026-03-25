@@ -24,10 +24,26 @@ const products: Product[] = [
 export default function ConstructionSite() {
   const [submitted, setSubmitted] = useState(false);
 
-  // Formani yuborish funksiyasi (Xatolar to'g'rilandi)
-  const handleSubmit = (e: React.FormEvent) => {
+  // Formani yuborish funksiyasi
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    
+    const target = e.target as any;
+    const name = target[0].value; 
+    const phone = target[1].value; 
+
+    try {
+      await fetch('https://script.google.com/macros/s/AKfycbxPQBcp-vBpbphVHw-3ZssWKHUyDjlY3pFLsVD6Jce9TTVLUIO9el1g7KROzTvNsgo/exec', {
+        method: 'POST',
+        mode: 'no-cors', 
+        body: JSON.stringify({ name, phone }),
+      });
+      
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Xatolik:", error);
+      alert("Xatolik yuz berdi, qaytadan urinib ko'ring.");
+    }
   };
 
   return (
