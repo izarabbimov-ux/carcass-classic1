@@ -65,6 +65,15 @@ const products: Product[] = [
   },
   {
     id: 7,
+    name: "Carcass Rotband (Universal)",
+    price: "65,000",
+    desc: "Hamma turdagi yuzalar uchun universal gipsli shtukaturka.",
+    img: "https://images.unsplash.com/photo-1585338661021-096c4333626e?q=80&w=800&auto=format&fit=crop",
+    features: ["Universal", "Qalin qatlam", "Yorilmaydi"],
+    badge: "Yangi",
+  },
+  {
+    id: 8,
     name: "Etap 700 (Carcass Edition)",
     price: "145,000",
     desc: "Professional pardozlash uchun eng yuqori sifatli premium mahsulot.",
@@ -85,9 +94,8 @@ export default function ConstructionSite() {
     message: "",
   });
 
-  // YANGI SCRIPT URL QO'YILDI
-  const SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbwh__639qLonXCvWYXBROLWU77IoYgLKYJyfGNeUzuSn7YC569SW8s8Pt6V-Pb0ac0/exec";
+  // YANGI SCRIPT URL (Siz bergan URL)
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvnVcgbU5D1hGHrqSrFucnt8BnSboojR4SPAOe5H5OJekB_YjVP1SHV9pcn0uKqmM/exec";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -109,10 +117,9 @@ export default function ConstructionSite() {
     setLoading(true);
 
     try {
-      // Telegram va Google Sheets-ga yuborish
       await fetch(SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors", // Google Script uchun no-cors kerak
+        mode: "no-cors",
         cache: 'no-cache',
         headers: {
           "Content-Type": "application/json",
@@ -122,18 +129,13 @@ export default function ConstructionSite() {
           phone: form.phone,
           product: form.product,
           message: form.message,
-          source: "Carcass Website",
+          source: "Carcass Classic Website",
+          createdAt: new Date().toLocaleString("uz-UZ"),
         }),
       });
 
-      // Muvaffaqiyatli yuborilganda (no-cors holatida response o'qib bo'lmaydi, shunchaki true deymiz)
       setSubmitted(true);
-      setForm({
-        name: "",
-        phone: "",
-        product: "",
-        message: "",
-      });
+      setForm({ name: "", phone: "", product: "", message: "" });
     } catch (error) {
       console.error("Xatolik:", error);
       alert("Xatolik yuz berdi, qaytadan urinib ko‘ring.");
@@ -154,199 +156,67 @@ export default function ConstructionSite() {
       {/* NAVBAR */}
       <nav className="fixed top-0 w-full bg-white/75 backdrop-blur-xl z-50 py-4 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <a
-            href="#home"
-            className="text-2xl md:text-3xl font-black tracking-tighter text-blue-900 italic uppercase"
-          >
+          <a href="#home" className="text-2xl md:text-3xl font-black tracking-tighter text-blue-900 italic uppercase">
             CARCASS <span className="text-yellow-500">CLASSIC</span>
           </a>
-
           <div className="hidden md:flex gap-8 font-semibold text-xs uppercase tracking-[0.25em] text-slate-700">
-            <a href="#products" className="hover:text-blue-600 transition-colors">
-              Mahsulotlar
-            </a>
-            <a href="#about" className="hover:text-blue-600 transition-colors">
-              Nega biz
-            </a>
-            <a href="#contact" className="hover:text-blue-600 transition-colors">
-              Buyurtma
-            </a>
+            <a href="#products" className="hover:text-blue-600 transition-colors">Mahsulotlar</a>
+            <a href="#about" className="hover:text-blue-600 transition-colors">Nega biz</a>
+            <a href="#contact" className="hover:text-blue-600 transition-colors">Buyurtma</a>
           </div>
-
-          <a
-            href="#contact"
-            className="hidden md:inline-flex bg-slate-950 text-white px-6 py-3 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-blue-700 transition-all"
-          >
+          <a href="#contact" className="hidden md:inline-flex bg-slate-950 text-white px-6 py-3 rounded-full text-xs font-black uppercase tracking-[0.2em] hover:bg-blue-700 transition-all">
             Bog‘lanish
           </a>
         </div>
       </nav>
 
-      {/* HERO */}
-      <section
-        id="home"
-        className="relative min-h-[760px] flex items-center justify-center text-white pt-24"
-      >
+      {/* HERO SECTION */}
+      <section id="home" className="relative min-h-[760px] flex items-center justify-center text-white pt-24">
         <div className="absolute inset-0 bg-slate-900">
-          <img
-            src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1600&auto=format&fit=crop"
-            className="w-full h-full object-cover opacity-35"
-            alt="Qurilish materiali fon rasmi"
-          />
+          <img src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1600&auto=format&fit=crop" className="w-full h-full object-cover opacity-35" alt="Hero" />
           <div className="absolute inset-0 bg-gradient-to-b from-blue-950/80 via-slate-900/85 to-slate-950"></div>
         </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <div className="inline-flex px-5 py-2 rounded-full bg-yellow-400/10 border border-yellow-400/20 text-yellow-300 text-xs font-black uppercase tracking-[0.25em] mb-8">
-              Sifat • Ishonch • Mustahkamlik
-            </div>
-
-            <h1 className="text-5xl md:text-7xl font-black leading-[0.95] uppercase tracking-tight">
-              Qurilish uchun
-              <span className="block text-yellow-400">ishonchli qorishmalar</span>
-            </h1>
-
-            <p className="mt-8 text-lg md:text-xl text-slate-200 leading-8 max-w-2xl">
-              Fasad, ichki devor, plitka va pardozlash ishlari uchun sifatli,
-              mustahkam va professional qurilish mahsulotlari.
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="#products"
-                className="bg-blue-600 hover:bg-blue-500 py-4 px-8 rounded-2xl transition-all shadow-xl font-black uppercase text-sm tracking-[0.2em]"
-              >
-                Katalogni ko‘rish
-              </a>
-              <a
-                href="#contact"
-                className="bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm py-4 px-8 rounded-2xl transition-all font-black uppercase text-sm tracking-[0.2em]"
-              >
-                Buyurtma berish
-              </a>
-            </div>
-
-            <div className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {[
-                "Namlikka chidamli",
-                "Ustalar tanlovi",
-                "Sifatli tarkib",
-                "Tez aloqa",
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="bg-white/5 border border-white/10 rounded-2xl px-4 py-4 text-sm font-semibold text-slate-100 backdrop-blur-sm text-center"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+          <div className="inline-flex px-5 py-2 rounded-full bg-yellow-400/10 border border-yellow-400/20 text-yellow-300 text-xs font-black uppercase tracking-[0.25em] mb-8">
+            Sifat • Ishonch • Mustahkamlik
           </div>
-
-          <div className="hidden lg:block">
-            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-[2.5rem] p-8 shadow-2xl">
-              <div className="text-xs uppercase tracking-[0.25em] text-yellow-300 font-black mb-4">
-                Top mahsulotlar
-              </div>
-              <div className="space-y-5">
-                {products.slice(0, 3).map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center gap-4 bg-white/5 rounded-2xl p-4 border border-white/10"
-                  >
-                    <img
-                      src={item.img}
-                      alt={item.name}
-                      className="w-20 h-20 object-cover rounded-2xl"
-                    />
-                    <div className="flex-1">
-                      <h3 className="font-black text-white text-sm">{item.name}</h3>
-                      <p className="text-slate-300 text-sm mt-1">{item.price} UZS</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <h1 className="text-5xl md:text-8xl font-black leading-[0.95] uppercase tracking-tight mb-8">
+            Qurilish uchun <br />
+            <span className="text-yellow-400">ishonchli qorishmalar</span>
+          </h1>
+          <p className="text-lg md:text-xl text-slate-200 leading-8 max-w-2xl mx-auto mb-10">
+            Fasad, ichki devor, plitka va pardozlash ishlari uchun professional mahsulotlar.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a href="#products" className="bg-blue-600 hover:bg-blue-500 py-4 px-10 rounded-2xl transition-all shadow-xl font-black uppercase text-sm tracking-[0.2em]">
+              Katalogni ko‘rish
+            </a>
+            <a href="#contact" className="bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm py-4 px-10 rounded-2xl transition-all font-black uppercase text-sm tracking-[0.2em]">
+              Buyurtma berish
+            </a>
           </div>
         </div>
       </section>
 
-      {/* TRUST STRIP */}
-      <section className="relative z-10 -mt-12 px-6">
-        <div className="max-w-7xl mx-auto bg-white rounded-[2.5rem] shadow-[0_20px_80px_rgba(15,23,42,0.08)] border border-slate-100 p-8 md:p-10 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { title: "Yuqori sifat", desc: "Sinovdan o‘tgan tarkib" },
-            { title: "Kuchli yopishish", desc: "Ishonchli natija" },
-            { title: "Qulay buyurtma", desc: "Tez aloqa va maslahat" },
-            { title: "Professional yondashuv", desc: "Quruvchilar uchun yechim" },
-          ].map((item, idx) => (
-            <div key={idx}>
-              <h3 className="text-lg font-black text-slate-900">{item.title}</h3>
-              <p className="text-slate-500 mt-2 text-sm leading-6">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PRODUCTS */}
+      {/* PRODUCTS SECTION */}
       <section id="products" className="relative z-10 py-28 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-          <div>
-            <div className="inline-block px-5 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-black uppercase tracking-[0.25em] mb-5">
-              Mahsulotlar
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-950 uppercase tracking-tight">
-              Mahsulotlarimiz
-            </h2>
-            <p className="text-slate-600 mt-4 text-lg max-w-2xl">
-              Har bir loyiha uchun mustahkam, sifatli va ishonchli qurilish yechimlari.
-            </p>
-          </div>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-black text-slate-950 uppercase tracking-tight">Bizning Mahsulotlar</h2>
+          <div className="h-1.5 w-24 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
           {products.map((p) => (
-            <div
-              key={p.id}
-              className="group bg-white rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_80px_rgba(15,23,42,0.12)] transition-all duration-500 border border-slate-100 flex flex-col h-full hover:-translate-y-2"
-            >
-              <div className="relative h-72 overflow-hidden">
-                <img
-                  src={p.img}
-                  alt={p.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
-                />
-
-                <div className="absolute top-5 left-5 bg-blue-600 text-white px-5 py-2 rounded-xl text-sm font-black shadow-lg">
-                  {p.price} UZS
-                </div>
-
-                {p.badge && (
-                  <div className="absolute top-5 right-5 bg-yellow-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-black uppercase shadow-lg">
-                    {p.badge}
-                  </div>
-                )}
+            <div key={p.id} className="group bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-100 flex flex-col">
+              <div className="relative h-56">
+                <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold">{p.price} UZS</div>
+                {p.badge && <div className="absolute top-4 right-4 bg-yellow-400 text-slate-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">{p.badge}</div>}
               </div>
-
-              <div className="p-8 flex-grow flex flex-col">
-                <h3 className="text-2xl font-black mb-3 text-slate-900">{p.name}</h3>
-                <p className="text-slate-600 text-sm leading-7 mb-6">{p.desc}</p>
-
-                <div className="space-y-3 mb-8">
-                  {p.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-3 text-sm text-slate-700">
-                      <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-
-                <a
-                  href="#contact"
-                  className="mt-auto block text-center py-4 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all hover:bg-yellow-400 hover:text-slate-950"
-                >
-                  Buyurtma berish
+              <div className="p-6 flex-grow flex flex-col">
+                <h3 className="font-black text-lg mb-2">{p.name}</h3>
+                <p className="text-slate-500 text-xs leading-5 mb-4">{p.desc}</p>
+                <a href="#contact" className="mt-auto block text-center py-3 bg-slate-900 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-blue-600 transition-colors">
+                  Buyurtma
                 </a>
               </div>
             </div>
@@ -354,247 +224,74 @@ export default function ConstructionSite() {
         </div>
       </section>
 
-      {/* WHY US */}
-      <section id="about" className="relative z-10 py-28 px-6 bg-white border-y border-slate-200">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="inline-block px-5 py-2 rounded-full bg-yellow-100 text-yellow-700 text-xs font-black uppercase tracking-[0.25em] mb-5">
-              Nega biz
-            </div>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-950 uppercase tracking-tight leading-tight">
-              Quruvchilar va mijozlar tanlaydigan sifat
-            </h2>
-            <p className="text-slate-600 mt-6 text-lg leading-8 max-w-2xl">
-              CARCASS CLASSIC mahsulotlari qulay ishlov, mustahkam natija va
-              ishonchli sifatni birlashtiradi. Har bir loyiha uchun amaliy va
-              professional yechim taklif qilamiz.
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-6">
-            {[
-              {
-                title: "Sifatli tarkib",
-                desc: "Yuqori natija beruvchi tanlangan xomashyo asosida tayyorlanadi.",
-              },
-              {
-                title: "Qulay ishlov",
-                desc: "Ustalar uchun qulay surtish, yoyish va ishlatish imkoniyati.",
-              },
-              {
-                title: "Mustahkam natija",
-                desc: "Ichki va tashqi ishlar uchun ishonchli va chidamli yechim.",
-              },
-              {
-                title: "Tez maslahat",
-                desc: "Mahsulot tanlashda sizga tezkor ma’lumot va yo‘riqnoma beramiz.",
-              },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="rounded-[2rem] border border-slate-200 bg-slate-50 p-7 shadow-sm"
-              >
-                <h3 className="text-xl font-black text-slate-900 mb-3">{item.title}</h3>
-                <p className="text-slate-600 leading-7 text-sm">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="relative z-10 py-28 px-6 bg-gradient-to-b from-slate-50 to-white">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
-          <div>
-            <div className="inline-block px-5 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-black uppercase tracking-[0.25em] mb-6">
-              Bog‘lanish
-            </div>
-
-            <h2 className="text-4xl md:text-6xl font-black text-slate-950 leading-tight uppercase">
-              Buyurtma qoldiring <br />
-              <span className="text-blue-600">va biz siz bilan bog‘lanamiz</span>
-            </h2>
-
-            <p className="mt-6 text-slate-600 text-lg leading-8 max-w-xl">
-              Mahsulotlar, narxlar, maslahat yoki buyurtma uchun formani to‘ldiring.
-              Operatorimiz siz bilan tez orada aloqaga chiqadi.
-            </p>
-
-            <div className="mt-10 grid sm:grid-cols-2 gap-5">
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="text-xs uppercase tracking-[0.25em] text-slate-400 font-bold mb-3">
-                  Telegram
+      {/* CONTACT SECTION */}
+      <section id="contact" className="relative z-10 py-28 px-6 bg-white border-t">
+        <div className="max-w-4xl mx-auto">
+          {!submitted ? (
+            <div className="bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-200">
+              <h2 className="text-3xl font-black text-center mb-8 uppercase tracking-tight">Buyurtma Formasi</h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Ism va Familya"
+                    className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                  />
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Telefon (+998901234567)"
+                    className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
+                    value={form.phone}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
-                <a
-                  href="https://t.me/iza_offf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xl font-black text-slate-900 hover:text-blue-600 transition"
+                <select
+                  name="product"
+                  className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
+                  value={form.product}
+                  onChange={handleChange}
+                  required
                 >
-                  @iza_offf
-                </a>
-              </div>
-
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="text-xs uppercase tracking-[0.25em] text-slate-400 font-bold mb-3">
-                  Instagram
-                </div>
-                <a
-                  href="https://instagram.com/carcass_classic"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xl font-black text-slate-900 hover:text-pink-600 transition"
-                >
-                  @carcass_classic
-                </a>
-              </div>
-
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="text-xs uppercase tracking-[0.25em] text-slate-400 font-bold mb-3">
-                  Telefon
-                </div>
-                <a
-                  href="tel:+998901234567"
-                  className="text-xl font-black text-slate-900 hover:text-blue-600 transition"
-                >
-                  +998 90 123 45 67
-                </a>
-              </div>
-
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="text-xs uppercase tracking-[0.25em] text-slate-400 font-bold mb-3">
-                  Ish vaqti
-                </div>
-                <div className="text-xl font-black text-slate-900">09:00 – 20:00</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative">
-            {!submitted ? (
-              <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_30px_80px_rgba(15,23,42,0.08)] border border-slate-100 relative z-10">
-                <div className="mb-8">
-                  <h3 className="text-3xl font-black text-slate-950 uppercase">
-                    Tez buyurtma
-                  </h3>
-                  <p className="text-slate-500 mt-3 leading-7">
-                    Ma’lumotingizni qoldiring, operatorimiz sizga aloqaga chiqadi.
-                  </p>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                      Ism va Familya
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      placeholder="Masalan: Ibrohim Xasanov"
-                      className="w-full p-5 bg-slate-50 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                      Telefon raqam
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={form.phone}
-                      onChange={handleChange}
-                      placeholder="+998901234567"
-                      className="w-full p-5 bg-slate-50 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                      Qiziqqan mahsulot
-                    </label>
-                    <select
-                      name="product"
-                      value={form.product}
-                      onChange={handleChange}
-                      className="w-full p-5 bg-slate-50 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                      required
-                    >
-                      <option value="">Mahsulotni tanlang</option>
-                      {products.map((p) => (
-                        <option key={p.id} value={p.name}>
-                          {p.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                      Izoh
-                    </label>
-                    <textarea
-                      name="message"
-                      value={form.message}
-                      onChange={handleChange}
-                      placeholder="Masalan: 20 qop kerak..."
-                      rows={4}
-                      className="w-full p-5 bg-slate-50 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-slate-950 text-white font-black py-5 rounded-2xl shadow-xl hover:bg-blue-700 transition-all uppercase text-sm tracking-[0.25em] disabled:opacity-70"
-                  >
-                    {loading ? "Yuborilmoqda..." : "So‘rov yuborish"}
-                  </button>
-                </form>
-              </div>
-            ) : (
-              <div className="bg-gradient-to-br from-blue-600 to-slate-900 p-12 md:p-16 rounded-[2.5rem] text-center text-white shadow-[0_30px_80px_rgba(37,99,235,0.25)]">
-                <div className="w-20 h-20 mx-auto rounded-full bg-white/10 flex items-center justify-center mb-8 text-4xl">
-                  ✓
-                </div>
-                <h2 className="text-4xl font-black mb-4 uppercase">Rahmat!</h2>
-                <p className="text-blue-100 text-lg leading-8 max-w-md mx-auto">
-                  Arizangiz qabul qilindi. Tez orada siz bilan bog‘lanamiz.
-                </p>
+                  <option value="">Mahsulotni tanlang</option>
+                  {products.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
+                </select>
+                <textarea
+                  name="message"
+                  placeholder="Izohingiz (masalan: 100 qop kerak)"
+                  rows={4}
+                  className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
+                  value={form.message}
+                  onChange={handleChange}
+                />
                 <button
-                  onClick={() => setSubmitted(false)}
-                  className="mt-10 inline-block text-sm font-bold uppercase tracking-[0.2em] border border-white/30 px-6 py-3 rounded-full hover:bg-white hover:text-slate-900 transition-all"
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition-all uppercase tracking-widest disabled:opacity-50"
                 >
-                  Yangi ariza
+                  {loading ? "Yuborilmoqda..." : "Yuborish"}
                 </button>
-              </div>
-            )}
-          </div>
+              </form>
+            </div>
+          ) : (
+            <div className="text-center p-12 bg-green-50 rounded-[2.5rem] border border-green-200">
+              <h2 className="text-3xl font-black text-green-800 mb-4">MUVAFFAQIYATLI!</h2>
+              <p className="text-green-700 mb-8">Arizangiz qabul qilindi. Tez orada operatorimiz siz bilan bog'lanadi.</p>
+              <button onClick={() => setSubmitted(false)} className="bg-green-600 text-white px-8 py-3 rounded-full font-bold">Yangi buyurtma</button>
+            </div>
+          )}
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="relative z-10 bg-slate-950 text-white pt-20 pb-10 px-6">
-        <div className="max-w-7xl mx-auto text-center md:text-left">
-          <div className="grid md:grid-cols-4 gap-12 border-b border-white/10 pb-14">
-            <div className="md:col-span-2">
-              <div className="text-3xl font-black mb-5 uppercase">
-                CARCASS <span className="text-yellow-400">CLASSIC</span>
-              </div>
-              <p className="text-slate-400 leading-8 max-w-lg">
-                Fasad, ichki pardozlash va plitka ishlari uchun sifatli qurilish
-                qorishmalari.
-              </p>
-            </div>
-          </div>
-          <div className="pt-8 text-slate-500 text-sm">
-            © 2026 Carcass Classic. Barcha huquqlar himoyalangan.
-          </div>
-        </div>
+      <footer className="bg-slate-950 text-white py-12 px-6 text-center">
+        <p className="text-2xl font-black italic mb-4">CARCASS CLASSIC</p>
+        <p className="text-slate-500 text-sm">© 2026 Barcha huquqlar himoyalangan.</p>
       </footer>
     </div>
   );
