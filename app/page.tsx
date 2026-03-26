@@ -88,29 +88,34 @@ export default function ConstructionSite() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "", product: "", message: "" });
 
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvnVcgbU5D1hGHrqSrFucnt8BnSboojR4SPAOe5H5OJekB_YjVP1SHV9pcn0uKqmM/exec";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify({ ...form, source: "Carcass Website", createdAt: new Date().toLocaleString() }),
-      });
+ // handleSubmit funksiyasini quyidagiga almashtiring:
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+  try {
+    const response = await fetch("/api/send-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    if (response.ok) {
       setSubmitted(true);
       setForm({ name: "", phone: "", product: "", message: "" });
-    } catch (error) {
-      alert("Xatolik!");
-    } finally {
-      setLoading(false);
+    } else {
+      throw new Error();
     }
-  };
+  } catch (error) {
+    alert("Xatolik yuz berdi. Iltimos qaytadan urinib ko'ring.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen text-slate-900 scroll-smooth relative bg-slate-50 overflow-hidden font-sans">
