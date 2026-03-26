@@ -86,74 +86,35 @@ const products: Product[] = [
 export default function ConstructionSite() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", product: "", message: "" });
 
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    product: "",
-    message: "",
-  });
-
-  // YANGI SCRIPT URL (Siz bergan URL)
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvnVcgbU5D1hGHrqSrFucnt8BnSboojR4SPAOe5H5OJekB_YjVP1SHV9pcn0uKqmM/exec";
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!form.name || !form.phone || !form.product) {
-      alert("Iltimos, ism, telefon va mahsulotni to‘ldiring.");
-      return;
-    }
-
     setLoading(true);
-
     try {
       await fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
-        cache: 'no-cache',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          phone: form.phone,
-          product: form.product,
-          message: form.message,
-          source: "Carcass Classic Website",
-          createdAt: new Date().toLocaleString("uz-UZ"),
-        }),
+        body: JSON.stringify({ ...form, source: "Carcass Website", createdAt: new Date().toLocaleString() }),
       });
-
       setSubmitted(true);
       setForm({ name: "", phone: "", product: "", message: "" });
     } catch (error) {
-      console.error("Xatolik:", error);
-      alert("Xatolik yuz berdi, qaytadan urinib ko‘ring.");
+      alert("Xatolik!");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen text-slate-900 scroll-smooth relative bg-slate-50 overflow-hidden">
-      {/* BACKGROUND EFFECTS */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-white via-slate-100 to-slate-200"></div>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-[100px]"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-yellow-100/30 rounded-full blur-[100px]"></div>
-      </div>
-
-      {/* NAVBAR */}
+    <div className="min-h-screen text-slate-900 scroll-smooth relative bg-slate-50 overflow-hidden font-sans">
+      {/* 1. NAVBAR */}
       <nav className="fixed top-0 w-full bg-white/75 backdrop-blur-xl z-50 py-4 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
           <a href="#home" className="text-2xl md:text-3xl font-black tracking-tighter text-blue-900 italic uppercase">
@@ -170,8 +131,8 @@ export default function ConstructionSite() {
         </div>
       </nav>
 
-      {/* HERO SECTION */}
-      <section id="home" className="relative min-h-[760px] flex items-center justify-center text-white pt-24">
+      {/* 2. HERO SECTION */}
+      <section id="home" className="relative min-h-[85vh] flex items-center justify-center text-white pt-24">
         <div className="absolute inset-0 bg-slate-900">
           <img src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?q=80&w=1600&auto=format&fit=crop" className="w-full h-full object-cover opacity-35" alt="Hero" />
           <div className="absolute inset-0 bg-gradient-to-b from-blue-950/80 via-slate-900/85 to-slate-950"></div>
@@ -188,35 +149,61 @@ export default function ConstructionSite() {
             Fasad, ichki devor, plitka va pardozlash ishlari uchun professional mahsulotlar.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="#products" className="bg-blue-600 hover:bg-blue-500 py-4 px-10 rounded-2xl transition-all shadow-xl font-black uppercase text-sm tracking-[0.2em]">
+            <a href="#products" className="bg-blue-600 hover:bg-blue-500 py-5 px-12 rounded-2xl transition-all shadow-xl font-black uppercase text-sm tracking-[0.2em]">
               Katalogni ko‘rish
             </a>
-            <a href="#contact" className="bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm py-4 px-10 rounded-2xl transition-all font-black uppercase text-sm tracking-[0.2em]">
+            <a href="#contact" className="bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm py-5 px-12 rounded-2xl transition-all font-black uppercase text-sm tracking-[0.2em]">
               Buyurtma berish
             </a>
           </div>
         </div>
       </section>
 
-      {/* PRODUCTS SECTION */}
-      <section id="products" className="relative z-10 py-28 max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-black text-slate-950 uppercase tracking-tight">Bizning Mahsulotlar</h2>
-          <div className="h-1.5 w-24 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
+      {/* 3. TRUST STRIP */}
+      <section className="relative z-10 -mt-16 px-6">
+        <div className="max-w-7xl mx-auto bg-white rounded-[3rem] shadow-2xl border border-slate-100 p-10 md:p-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { title: "Yuqori sifat", desc: "Sinovdan o‘tgan tarkib" },
+            { title: "Kuchli yopishish", desc: "Ishonchli natija" },
+            { title: "Qulay buyurtma", desc: "Tez aloqa va maslahat" },
+            { title: "Professional", desc: "Ustalar uchun yechim" },
+          ].map((item, idx) => (
+            <div key={idx} className="text-center md:text-left">
+              <h3 className="text-lg font-black text-slate-900">{item.title}</h3>
+              <p className="text-slate-500 mt-2 text-sm">{item.desc}</p>
+            </div>
+          ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      </section>
+
+      {/* 4. PRODUCTS SECTION */}
+      <section id="products" className="relative z-10 py-32 max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div>
+            <div className="inline-block px-5 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-black uppercase tracking-[0.25em] mb-5">Mahsulotlar</div>
+            <h2 className="text-4xl md:text-6xl font-black text-slate-950 uppercase tracking-tight">Mahsulotlarimiz</h2>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
           {products.map((p) => (
-            <div key={p.id} className="group bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-100 flex flex-col">
-              <div className="relative h-56">
-                <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold">{p.price} UZS</div>
-                {p.badge && <div className="absolute top-4 right-4 bg-yellow-400 text-slate-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">{p.badge}</div>}
+            <div key={p.id} className="group bg-white rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 flex flex-col h-full">
+              <div className="relative h-64 overflow-hidden">
+                <img src={p.img} alt={p.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute top-5 left-5 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-black shadow-lg">{p.price} UZS</div>
+                {p.badge && <div className="absolute top-5 right-5 bg-yellow-400 text-slate-950 px-4 py-2 rounded-xl text-[10px] font-black uppercase shadow-lg">{p.badge}</div>}
               </div>
-              <div className="p-6 flex-grow flex flex-col">
-                <h3 className="font-black text-lg mb-2">{p.name}</h3>
-                <p className="text-slate-500 text-xs leading-5 mb-4">{p.desc}</p>
-                <a href="#contact" className="mt-auto block text-center py-3 bg-slate-900 text-white rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-blue-600 transition-colors">
-                  Buyurtma
+              <div className="p-8 flex-grow flex flex-col">
+                <h3 className="text-xl font-black mb-3 text-slate-900">{p.name}</h3>
+                <p className="text-slate-500 text-sm leading-6 mb-6">{p.desc}</p>
+                <div className="space-y-2 mb-8">
+                  {p.features.map((f, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs font-bold text-slate-600 italic">
+                      <span className="w-1.5 h-1.5 rounded-full bg-yellow-500"></span> {f}
+                    </div>
+                  ))}
+                </div>
+                <a href="#contact" className="mt-auto block text-center py-4 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all hover:bg-blue-600">
+                  Buyurtma berish
                 </a>
               </div>
             </div>
@@ -224,74 +211,101 @@ export default function ConstructionSite() {
         </div>
       </section>
 
-      {/* CONTACT SECTION */}
-      <section id="contact" className="relative z-10 py-28 px-6 bg-white border-t">
-        <div className="max-w-4xl mx-auto">
-          {!submitted ? (
-            <div className="bg-slate-50 p-8 md:p-12 rounded-[2.5rem] border border-slate-200">
-              <h2 className="text-3xl font-black text-center mb-8 uppercase tracking-tight">Buyurtma Formasi</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Ism va Familya"
-                    className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
-                    value={form.name}
-                    onChange={handleChange}
-                    required
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Telefon (+998901234567)"
-                    className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
-                    value={form.phone}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <select
-                  name="product"
-                  className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
-                  value={form.product}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Mahsulotni tanlang</option>
-                  {products.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
-                </select>
-                <textarea
-                  name="message"
-                  placeholder="Izohingiz (masalan: 100 qop kerak)"
-                  rows={4}
-                  className="w-full p-4 rounded-2xl border bg-white outline-none focus:ring-2 focus:ring-blue-500"
-                  value={form.message}
-                  onChange={handleChange}
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-blue-600 text-white font-black py-4 rounded-2xl hover:bg-blue-700 transition-all uppercase tracking-widest disabled:opacity-50"
-                >
-                  {loading ? "Yuborilmoqda..." : "Yuborish"}
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="text-center p-12 bg-green-50 rounded-[2.5rem] border border-green-200">
-              <h2 className="text-3xl font-black text-green-800 mb-4">MUVAFFAQIYATLI!</h2>
-              <p className="text-green-700 mb-8">Arizangiz qabul qilindi. Tez orada operatorimiz siz bilan bog'lanadi.</p>
-              <button onClick={() => setSubmitted(false)} className="bg-green-600 text-white px-8 py-3 rounded-full font-bold">Yangi buyurtma</button>
-            </div>
-          )}
+      {/* 5. NEGA BIZ (ABOUT) */}
+      <section id="about" className="relative z-10 py-32 px-6 bg-white border-y border-slate-200">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-block px-5 py-2 rounded-full bg-yellow-100 text-yellow-700 text-xs font-black uppercase tracking-[0.25em] mb-5">Nega biz</div>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-950 uppercase tracking-tight leading-tight">Quruvchilar tanlaydigan sifat</h2>
+            <p className="text-slate-600 mt-6 text-lg leading-8">CARCASS CLASSIC mahsulotlari mustahkam natija va ishonchli sifatni birlashtiradi.</p>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-6">
+            {[
+              { t: "Sifatli tarkib", d: "Tanlangan xomashyo asosida." },
+              { t: "Qulay ishlov", d: "Ustalar uchun oson surtish." },
+              { t: "Mustahkam", d: "Yillar davomida chidamli." },
+              { t: "Tez aloqa", d: "Professional maslahat." },
+            ].map((item, i) => (
+              <div key={i} className="rounded-[2rem] border border-slate-200 bg-slate-50 p-8">
+                <h3 className="text-xl font-black text-slate-900 mb-2">{item.t}</h3>
+                <p className="text-slate-500 text-sm">{item.d}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-slate-950 text-white py-12 px-6 text-center">
-        <p className="text-2xl font-black italic mb-4">CARCASS CLASSIC</p>
-        <p className="text-slate-500 text-sm">© 2026 Barcha huquqlar himoyalangan.</p>
+      {/* 6. CONTACT & SOCIALS SECTION */}
+      <section id="contact" className="relative z-10 py-32 px-6 bg-slate-50">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
+          <div>
+            <div className="inline-block px-5 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-black uppercase tracking-[0.25em] mb-6">Bog‘lanish</div>
+            <h2 className="text-4xl md:text-6xl font-black text-slate-950 leading-tight uppercase mb-8">Biz bilan <br /><span className="text-blue-600">aloqada bo‘ling</span></h2>
+            
+            <div className="grid sm:grid-cols-2 gap-6">
+              <a href="https://t.me/iza_offf" target="_blank" className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm hover:shadow-md transition-all group">
+                <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Telegram</div>
+                <div className="text-xl font-black text-slate-900 group-hover:text-blue-600">@iza_offf</div>
+              </a>
+              <a href="https://instagram.com/carcass_classic" target="_blank" className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm hover:shadow-md transition-all group">
+                <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Instagram</div>
+                <div className="text-xl font-black text-slate-900 group-hover:text-pink-600">@carcass_classic</div>
+              </a>
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+                <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Telefon</div>
+                <div className="text-xl font-black text-slate-900">+998 90 123 45 67</div>
+              </div>
+              <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
+                <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Ish vaqti</div>
+                <div className="text-xl font-black text-slate-900">09:00 – 20:00</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            {!submitted ? (
+              <div className="bg-white p-10 md:p-12 rounded-[3rem] shadow-xl border border-slate-100">
+                <h3 className="text-3xl font-black mb-8 uppercase">Tez buyurtma</h3>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <input type="text" name="name" placeholder="Ismingiz" className="w-full p-5 bg-slate-50 rounded-2xl border outline-none focus:ring-2 focus:ring-blue-500" value={form.name} onChange={handleChange} required />
+                  <input type="tel" name="phone" placeholder="Telefon (+998...)" className="w-full p-5 bg-slate-50 rounded-2xl border outline-none focus:ring-2 focus:ring-blue-500" value={form.phone} onChange={handleChange} required />
+                  <select name="product" className="w-full p-5 bg-slate-50 rounded-2xl border outline-none focus:ring-2 focus:ring-blue-500" value={form.product} onChange={handleChange} required>
+                    <option value="">Mahsulotni tanlang</option>
+                    {products.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
+                  </select>
+                  <textarea name="message" placeholder="Izoh (qoplar soni...)" rows={4} className="w-full p-5 bg-slate-50 rounded-2xl border outline-none focus:ring-2 focus:ring-blue-500 resize-none" value={form.message} onChange={handleChange} />
+                  <button type="submit" disabled={loading} className="w-full bg-slate-950 text-white font-black py-5 rounded-2xl shadow-xl hover:bg-blue-700 transition-all uppercase tracking-widest">
+                    {loading ? "Yuborilmoqda..." : "Yuborish"}
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <div className="bg-blue-600 p-16 rounded-[3rem] text-center text-white shadow-2xl">
+                <div className="text-6xl mb-6">✓</div>
+                <h2 className="text-4xl font-black mb-4 uppercase">Rahmat!</h2>
+                <p className="text-blue-100 text-lg">Arizangiz qabul qilindi. Operatorimiz tez orada bog‘lanadi.</p>
+                <button onClick={() => setSubmitted(false)} className="mt-8 border border-white/30 px-8 py-3 rounded-full hover:bg-white hover:text-blue-600 transition-all font-bold uppercase">Yangi ariza</button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. FOOTER */}
+      <footer className="bg-slate-950 text-white pt-24 pb-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center border-b border-white/10 pb-12 gap-8">
+            <div className="text-3xl font-black uppercase italic">CARCASS <span className="text-yellow-400">CLASSIC</span></div>
+            <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-slate-400">
+              <a href="#products" className="hover:text-white transition">Mahsulotlar</a>
+              <a href="#about" className="hover:text-white transition">Nega biz</a>
+              <a href="https://instagram.com/carcass_classic" className="hover:text-white transition">Instagram</a>
+            </div>
+          </div>
+          <div className="pt-8 text-center md:text-left text-slate-500 text-xs">
+            © 2026 Carcass Classic. Barcha huquqlar himoyalangan. O'zbekistonda ishlab chiqarilgan.
+          </div>
+        </div>
       </footer>
     </div>
   );
