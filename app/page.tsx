@@ -85,35 +85,44 @@ export default function ConstructionSite() {
     message: "",
   });
 
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbzHah-yysFqCWPyCBJ449he-bJJDNgSUaaKeW3k3_oyVROCJBHPsiSy5MkEcE8ms3g/exec";
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!form.name || !form.phone || !form.product) {
+      alert("Iltimos, ism, telefon va mahsulotni to‘ldiring.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await fetch(
-        "https://script.google.com/macros/s/AKfycbxPQBcp-vBpbphVHw-3ZssWKHUyDjlY3pFLsVD6Jce9TTVLUIO9el1g7KROzTvNsgo/exec",
-        {
-          method: "POST",
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: form.name,
-            phone: form.phone,
-            product: form.product,
-            message: form.message,
-            source: "Carcass Classic Website",
-            createdAt: new Date().toLocaleString("uz-UZ"),
-          }),
-        }
-      );
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          product: form.product,
+          message: form.message,
+          source: "Carcass Classic Website",
+          createdAt: new Date().toLocaleString("uz-UZ"),
+        }),
+      });
 
       setSubmitted(true);
       setForm({
@@ -393,7 +402,6 @@ export default function ConstructionSite() {
       {/* CONTACT */}
       <section id="contact" className="relative z-10 py-28 px-6 bg-gradient-to-b from-slate-50 to-white">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
-          {/* LEFT */}
           <div>
             <div className="inline-block px-5 py-2 rounded-full bg-blue-100 text-blue-700 text-xs font-black uppercase tracking-[0.25em] mb-6">
               Bog‘lanish
@@ -463,7 +471,6 @@ export default function ConstructionSite() {
             </div>
           </div>
 
-          {/* RIGHT FORM */}
           <div className="relative">
             {!submitted ? (
               <div className="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-[0_30px_80px_rgba(15,23,42,0.08)] border border-slate-100 relative z-10">
@@ -501,7 +508,7 @@ export default function ConstructionSite() {
                       name="phone"
                       value={form.phone}
                       onChange={handleChange}
-                      placeholder="+998 90 123 45 67"
+                      placeholder="+998901234567"
                       className="w-full p-5 bg-slate-50 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                       required
                     />
@@ -595,26 +602,10 @@ export default function ConstructionSite() {
                 Sahifalar
               </h4>
               <ul className="space-y-3 text-slate-400">
-                <li>
-                  <a href="#home" className="hover:text-white transition">
-                    Bosh sahifa
-                  </a>
-                </li>
-                <li>
-                  <a href="#products" className="hover:text-white transition">
-                    Mahsulotlar
-                  </a>
-                </li>
-                <li>
-                  <a href="#about" className="hover:text-white transition">
-                    Nega biz
-                  </a>
-                </li>
-                <li>
-                  <a href="#contact" className="hover:text-white transition">
-                    Bog‘lanish
-                  </a>
-                </li>
+                <li><a href="#home" className="hover:text-white transition">Bosh sahifa</a></li>
+                <li><a href="#products" className="hover:text-white transition">Mahsulotlar</a></li>
+                <li><a href="#about" className="hover:text-white transition">Nega biz</a></li>
+                <li><a href="#contact" className="hover:text-white transition">Bog‘lanish</a></li>
               </ul>
             </div>
 
@@ -623,31 +614,9 @@ export default function ConstructionSite() {
                 Aloqa
               </h4>
               <ul className="space-y-3 text-slate-400">
-                <li>
-                  <a href="tel:+998901234567" className="hover:text-white transition">
-                    +998 90 123 45 67
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://t.me/iza_offf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-white transition"
-                  >
-                    @iza_offf
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://instagram.com/carcass_classic"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-white transition"
-                  >
-                    @carcass_classic
-                  </a>
-                </li>
+                <li><a href="tel:+998901234567" className="hover:text-white transition">+998 90 123 45 67</a></li>
+                <li><a href="https://t.me/iza_offf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">@iza_offf</a></li>
+                <li><a href="https://instagram.com/carcass_classic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">@carcass_classic</a></li>
                 <li>Toshkent, O‘zbekiston</li>
               </ul>
             </div>
