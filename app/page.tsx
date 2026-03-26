@@ -85,8 +85,9 @@ export default function ConstructionSite() {
     message: "",
   });
 
+  // YANGI SCRIPT URL QO'YILDI
   const SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbzHah-yysFqCWPyCBJ449he-bJJDNgSUaaKeW3k3_oyVROCJBHPsiSy5MkEcE8ms3g/exec";
+    "https://script.google.com/macros/s/AKfycbwh__639qLonXCvWYXBROLWU77IoYgLKYJyfGNeUzuSn7YC569SW8s8Pt6V-Pb0ac0/exec";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -108,9 +109,11 @@ export default function ConstructionSite() {
     setLoading(true);
 
     try {
+      // Telegram va Google Sheets-ga yuborish
       await fetch(SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors",
+        mode: "no-cors", // Google Script uchun no-cors kerak
+        cache: 'no-cache',
         headers: {
           "Content-Type": "application/json",
         },
@@ -119,11 +122,11 @@ export default function ConstructionSite() {
           phone: form.phone,
           product: form.product,
           message: form.message,
-          source: "Carcass Classic Website",
-          createdAt: new Date().toLocaleString("uz-UZ"),
+          source: "Carcass Website",
         }),
       });
 
+      // Muvaffaqiyatli yuborilganda (no-cors holatida response o'qib bo'lmaydi, shunchaki true deymiz)
       setSubmitted(true);
       setForm({
         name: "",
@@ -233,7 +236,7 @@ export default function ConstructionSite() {
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="bg-white/5 border border-white/10 rounded-2xl px-4 py-4 text-sm font-semibold text-slate-100 backdrop-blur-sm"
+                  className="bg-white/5 border border-white/10 rounded-2xl px-4 py-4 text-sm font-semibold text-slate-100 backdrop-blur-sm text-center"
                 >
                   {item}
                 </div>
@@ -430,7 +433,6 @@ export default function ConstructionSite() {
                 >
                   @iza_offf
                 </a>
-                <p className="text-slate-500 text-sm mt-2">Tezkor buyurtma va yozishma</p>
               </div>
 
               <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -445,7 +447,6 @@ export default function ConstructionSite() {
                 >
                   @carcass_classic
                 </a>
-                <p className="text-slate-500 text-sm mt-2">Mahsulotlar va yangiliklar</p>
               </div>
 
               <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -458,7 +459,6 @@ export default function ConstructionSite() {
                 >
                   +998 90 123 45 67
                 </a>
-                <p className="text-slate-500 text-sm mt-2">Savdo bo‘limi bilan aloqa</p>
               </div>
 
               <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -466,7 +466,6 @@ export default function ConstructionSite() {
                   Ish vaqti
                 </div>
                 <div className="text-xl font-black text-slate-900">09:00 – 20:00</div>
-                <p className="text-slate-500 text-sm mt-2">Dushanba – Shanba</p>
               </div>
             </div>
           </div>
@@ -542,7 +541,7 @@ export default function ConstructionSite() {
                       name="message"
                       value={form.message}
                       onChange={handleChange}
-                      placeholder="Masalan: 20 qop kerak, narxi va yetkazib berish haqida ma’lumot bering"
+                      placeholder="Masalan: 20 qop kerak..."
                       rows={4}
                       className="w-full p-5 bg-slate-50 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
                     />
@@ -555,10 +554,6 @@ export default function ConstructionSite() {
                   >
                     {loading ? "Yuborilmoqda..." : "So‘rov yuborish"}
                   </button>
-
-                  <p className="text-xs text-slate-400 text-center pt-2">
-                    Tugmani bosish orqali siz bilan bog‘lanishimizga rozilik bildirasiz.
-                  </p>
                 </form>
               </div>
             ) : (
@@ -584,7 +579,7 @@ export default function ConstructionSite() {
 
       {/* FOOTER */}
       <footer className="relative z-10 bg-slate-950 text-white pt-20 pb-10 px-6">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto text-center md:text-left">
           <div className="grid md:grid-cols-4 gap-12 border-b border-white/10 pb-14">
             <div className="md:col-span-2">
               <div className="text-3xl font-black mb-5 uppercase">
@@ -592,73 +587,15 @@ export default function ConstructionSite() {
               </div>
               <p className="text-slate-400 leading-8 max-w-lg">
                 Fasad, ichki pardozlash va plitka ishlari uchun sifatli qurilish
-                qorishmalari. Ishonchli mahsulot, qulay buyurtma va professional
-                yondashuv.
+                qorishmalari.
               </p>
             </div>
-
-            <div>
-              <h4 className="text-sm font-black uppercase tracking-[0.25em] text-white mb-5">
-                Sahifalar
-              </h4>
-              <ul className="space-y-3 text-slate-400">
-                <li><a href="#home" className="hover:text-white transition">Bosh sahifa</a></li>
-                <li><a href="#products" className="hover:text-white transition">Mahsulotlar</a></li>
-                <li><a href="#about" className="hover:text-white transition">Nega biz</a></li>
-                <li><a href="#contact" className="hover:text-white transition">Bog‘lanish</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-black uppercase tracking-[0.25em] text-white mb-5">
-                Aloqa
-              </h4>
-              <ul className="space-y-3 text-slate-400">
-                <li><a href="tel:+998901234567" className="hover:text-white transition">+998 90 123 45 67</a></li>
-                <li><a href="https://t.me/iza_offf" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">@iza_offf</a></li>
-                <li><a href="https://instagram.com/carcass_classic" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">@carcass_classic</a></li>
-                <li>Toshkent, O‘zbekiston</li>
-              </ul>
-            </div>
           </div>
-
-          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
-            <div>© 2026 Carcass Classic. Barcha huquqlar himoyalangan.</div>
-            <div>Premium construction materials landing page</div>
+          <div className="pt-8 text-slate-500 text-sm">
+            © 2026 Carcass Classic. Barcha huquqlar himoyalangan.
           </div>
         </div>
       </footer>
-
-      {/* FLOATING CONTACT BUTTONS */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-3">
-        <a
-          href="https://t.me/iza_offf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all text-xl"
-          title="Telegram"
-        >
-          ✈
-        </a>
-
-        <a
-          href="https://instagram.com/carcass_classic"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-14 h-14 rounded-full bg-pink-600 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all text-xl"
-          title="Instagram"
-        >
-          ◎
-        </a>
-
-        <a
-          href="tel:+998901234567"
-          className="w-14 h-14 rounded-full bg-slate-950 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all text-xl"
-          title="Call"
-        >
-          ☎
-        </a>
-      </div>
     </div>
   );
 }
