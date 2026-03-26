@@ -258,11 +258,11 @@ const handleSubmit = async (e: React.FormEvent) => {
               </a>
               <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
                 <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Telefon</div>
-                <div className="text-xl font-black text-slate-900">+998 90 123 45 67</div>
+                <div className="text-xl font-black text-slate-900">+998 97 934 73 75</div>
               </div>
               <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
                 <div className="text-xs uppercase tracking-widest text-slate-400 font-bold mb-3">Ish vaqti</div>
-                <div className="text-xl font-black text-slate-900">09:00 – 20:00</div>
+                <div className="text-xl font-black text-slate-900">08:00 – 18:00</div>
               </div>
             </div>
           </div>
