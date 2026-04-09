@@ -94,7 +94,7 @@ export default function ConstructionSite() {
           </a>
           <div className="hidden md:flex gap-8 font-semibold text-xs uppercase tracking-[0.25em] text-slate-700 items-center">
             <a href="#products" className="hover:text-blue-600 transition-colors">Mahsulotlar</a>
-            <a href="#about" className="hover:text-blue-600 transition-colors">Nega biz</a>
+            <a href="#about" className="hover:text-blue-600 transition-colors">Nega biz .</a>
             <a href="#contact" className="hover:text-blue-600 transition-colors">Buyurtma</a>
             {/* Ijtimoiy tarmoqlar tepada */}
             <div className="h-4 w-px bg-slate-200 mx-2"></div>
